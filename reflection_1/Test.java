@@ -1,3 +1,5 @@
+package reflection_1;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -6,6 +8,7 @@ import java.util.Random;
 @SuppressWarnings("ALL")
 public class Test {
 
+    static String package_name = "reflection_1.";
 
     public static void main(String[] args) {
 
@@ -13,14 +16,14 @@ public class Test {
         ClassLoader classLoader = Test.class.getClassLoader();
         Class<Deque> dequeClass = null;
         try {
-            dequeClass = (Class<Deque>) classLoader.loadClass(args[0]);
+            dequeClass = (Class<Deque>) classLoader.loadClass(package_name + args[0]);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
 
         Deque<Integer> deque = null;
-        if (dequeClass.getName().equals("ArrayDeque")) {
+        if (dequeClass.getName().equals(package_name+ "ArrayDeque")) {
             Constructor constructor = null;
 
             try {
@@ -60,9 +63,9 @@ public class Test {
 
         try {
             Method size = dequeClass.getMethod("size");
-            System.out.println("elements count: " + size.invoke(deque).toString());
+            System.out.println("number of added elem" + size.invoke(deque).toString());
         } catch (NoSuchMethodException e) {
-            System.out.println("size() not exist");
+            System.out.println("size() doesn't exist");
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }

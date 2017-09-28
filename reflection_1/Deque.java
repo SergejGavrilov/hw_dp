@@ -1,3 +1,5 @@
+package reflection_1;
+
 interface Deque<E> extends Iterable<E> {
 
     void addFirst(E elem);   // Добавляет элемент в начало очереди.
