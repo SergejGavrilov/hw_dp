@@ -1,5 +1,7 @@
 package List;
 
+//Первое задание на тему списков
+
 public class List<E extends Comparable<E>> {
 
     Node<E> head = null;
