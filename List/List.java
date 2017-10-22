@@ -24,6 +24,9 @@ public class List<E extends Comparable<E>> {
     }
 
     public E getValue(int i) {
+        if (i < 0 || i >= size)
+            throw new IndexOutOfBoundsException();
+
         return getElement(i).info;
     }
 
@@ -33,81 +36,19 @@ public class List<E extends Comparable<E>> {
     }
 
 
-    public void addLast(E item) {
-        if (head == null) addFirst(item);
-        else {
-            Node<E> tmp = head;
-            while (tmp.next != null) tmp = tmp.next;
-
-            tmp.next = new Node<E>(item, null);
-        }
-        size++;
-    }
-
-    public void insertAfter(E key, E toInsert) {
-        Node<E> tmp = head;
-        while (tmp != null && !tmp.info.equals(key)) tmp = tmp.next;
-
-        if (tmp != null)
-            tmp.next = new Node<E>(toInsert, tmp.next);
-
-        size++;
-    }
-
-    public void insertBefore(E key, E toInsert) {
-        if (head == null) return;
-        if (head.info.equals(key)) {
-            addFirst(toInsert);
-            return;
-        }
-
-        Node<E> prev = null;
-        Node<E> cur = head;
-
-        while (cur != null && !cur.info.equals(key)) {
-            prev = cur;
-            cur = cur.next;
-        }
-        //insert between cur and prev
-        if (cur != null) prev.next = new Node<E>(toInsert, cur);
-        size++;
-    }
-
-    public void remove(E key) {
-        if (head == null) throw new RuntimeException("cannot delete");
-
-        if (head.info.equals(key)) {
-            head = head.next;
-            return;
-        }
-
-        Node<E> cur = head;
-        Node<E> prev = null;
-
-        while (cur != null && !cur.info.equals(key)) {
-            prev = cur;
-            cur = cur.next;
-        }
-
-        if (cur == null) throw new RuntimeException("cannot delete");
-
-        //delete cur node
-        prev.next = cur.next;
-        size--;
-    }
 
     public void swap(int i, int j) {
 
         if (i > j) {
             int temp = i;
             i = j;
-            j = i;
+            j = temp;
         }
 
         if (i == j)
             return;
 
-        if (i < 0 || j > size)
+        if (i < 0 || j >= size)
             throw new IndexOutOfBoundsException();
 
 
@@ -170,26 +111,11 @@ public class List<E extends Comparable<E>> {
     }
 
     public void sort() {
-        Node<E> temp;
         for (int i = 1; i < size; i++) {
             for (int j = i; j > 0; j--) {
-                Node<E> fst = getElement(j);
-                Node<E> scnd = getElement(j - 1);
 
-                Node<E> next_1 = getElement(j + 1);
-                Node<E> next_2 = fst;
-
-                Node<E> prev_1 = scnd;
-                Node<E> prev_2 = getElement(j - 2);
-
-                if (fst.info.compareTo(scnd.info) < 0) {
-                    if (prev_2 != null)
-                        prev_2.next = fst;
-                    fst.next = scnd;
-                    scnd.next = next_1;
-
-                    if (j - 1 == 0)
-                        head = fst;
+                if (getElement(j).info.compareTo(getElement(j - 1).info) < 0) {
+                    swap(j - 1, j);
                 }
             }
         }

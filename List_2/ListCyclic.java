@@ -1,12 +1,14 @@
 package List_2;
 //Второе задание на тему списков
 
+import List.List;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ListCyclic<E> implements CycList<E> {
 
-    Node<E> head = null;
+    private Node<E> head = null;
 
     public ListCyclic(ArrayList<E> arr) {
         if (arr.size() == 0) {
@@ -14,7 +16,7 @@ public class ListCyclic<E> implements CycList<E> {
             return;
         }
         head = new Node<E>();
-        Node curr = head;
+        Node<E> curr = head;
         for (int i = 0; i < arr.size() - 1; i++) {
             curr.info = arr.get(i);
             curr.next = new Node();
@@ -60,14 +62,17 @@ public class ListCyclic<E> implements CycList<E> {
     }
 
 
-    private static <E> int length(CycList<E> list) {
-        if (list == null)
+
+    public int length() {
+        //проверка на наличие элементов в списке
+        if (head == null)
             return 0;
         int count = 1;
-        Iterator<E> it = list.iterator();
+        Iterator<E> it = this.iterator();
         Object fst = it.next();
         Object t = it.next();
-        while (!fst.equals(t) && it.hasNext()) {
+        // equals заменено на !=, теперь проверяем неравенство объектов, а не значений
+        while (fst != t && it.hasNext()) {
             t = it.next();
             count++;
         }
@@ -75,8 +80,8 @@ public class ListCyclic<E> implements CycList<E> {
     }
 
     public static <E> boolean listsEqual(CycList<E> list1, CycList<E> list2) {
-        int len = length(list1);
-        if (len != length(list2)) {
+        int len = ((ListCyclic<E>)list1).length();
+        if (len != ((ListCyclic<E>)list2).length()) {
             return false;
         }
         if (len == 0) {
